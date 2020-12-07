@@ -1,0 +1,40 @@
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+
+@media only screen and (min-width: 500px){
+	.data-list{
+		grid-template-columns: 1fr 1fr !important;
+	}
+}
+@media only screen and (min-width: 800px){
+    .data-list{
+        grid-template-columns: repeat(4, 1fr) !important;
+    }   
+}
+.header{
+	display:grid;
+	grid-template-columns: 7fr 1fr;
+}
+.data-list{
+	display:grid;
+	grid-template-columns:1fr;
+}
+.data-list .card{
+	margin:0 10px 10px 0;
+	padding:10px 10px 20px;
+	text-align:center;
+}
+.a-group{
+	display:grid;
+	grid-template-columns:1fr 1fr;
+	justify-items:center;
+}
+.menu-choice{
+	text-align:center;
+}
