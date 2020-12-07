@@ -41,5 +41,7 @@ class DatabaseSeeder extends Seeder
                 ]);
  
         });
+
+        \Artisan::call('storage:link', []);
     }
 }
