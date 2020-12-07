@@ -4,7 +4,7 @@
 			<button class="btn btn-large btn-light" @click="updatePage('clients')">Clients</button>
 			<button class="btn btn-large btn-light" @click="updatePage('transaction')">Transactions</button>
 		</div>
-		<div v-if='this.page === `clients`'>
+		<div v-if='page === `clients`'>
 			<clients v-bind:colors="this.colorArray"></clients>
 		</div>
 		<div v-else>

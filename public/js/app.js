@@ -2038,7 +2038,10 @@ __webpack_require__.r(__webpack_exports__);
       fetch(url, {
         //using post as put caused issues.
         method: 'post',
-        body: formData
+        body: formData,
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
       }).then(function (res) {
         return res.json();
       }).then(function (res) {
@@ -2072,7 +2075,10 @@ __webpack_require__.r(__webpack_exports__);
 
       if (confirm('Are you sure?')) {
         fetch("client/".concat(id), {
-          method: 'delete'
+          method: 'delete',
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
         }).then(function (res) {
           return res.json();
         }).then(function (res) {
@@ -2247,7 +2253,6 @@ __webpack_require__.r(__webpack_exports__);
   props: ['colors'],
   data: function data() {
     return {
-      colorArray: ['#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6', '#E6B333', '#3366E6', '#999966', '#99FF99', '#B34D4D', '#80B300', '#809900', '#E6B3B3', '#6680B3', '#66991A', '#FF99E6', '#CCFF1A', '#FF1A66', '#E6331A', '#33FFCC', '#66994D', '#B366CC', '#4D8000', '#B33300', '#CC80CC', '#66664D', '#991AFF', '#E666FF', '#4DB3FF', '#1AB399', '#E666B3', '#33991A', '#CC9999', '#B3B31A', '#00E680', '#4D8066', '#809980', '#E6FF80', '#1AFF33', '#999933', '#FF3380', '#CCCC00', '#66E64D', '#4D80CC', '#9900B3', '#E64D66', '#4DB380', '#FF4D4D', '#99E6E6', '#6666FF'],
       clients: [],
       transactions: [],
       transaction: {
@@ -2297,7 +2302,6 @@ __webpack_require__.r(__webpack_exports__);
       fetch(url).then(function (res) {
         return res.json();
       }).then(function (res) {
-        console.log(res);
         _this2.transactions = res.data;
         vm.paginate(res);
       })["catch"](function (err) {
@@ -2309,11 +2313,11 @@ __webpack_require__.r(__webpack_exports__);
 
       var url = this.edit ? 'transactions' : 'transaction';
       fetch(url, {
-        //using post as put caused issues.
         method: 'post',
         body: JSON.stringify(this.transaction),
         headers: {
-          'content-type': 'application/json'
+          'content-type': 'application/json',
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
       }).then(function (res) {
         return res.json();
@@ -2348,7 +2352,10 @@ __webpack_require__.r(__webpack_exports__);
 
       if (confirm('Are you sure?')) {
         fetch("transaction/".concat(id), {
-          method: 'delete'
+          method: 'delete',
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
         }).then(function (res) {
           return res.json();
         }).then(function (res) {
@@ -38741,7 +38748,7 @@ var render = function() {
                     }
                   }
                 },
-                [_vm._v("X")]
+                [_vm._v("Delete")]
               )
             ])
           ]
@@ -38782,7 +38789,11 @@ var render = function() {
                         }
                       ],
                       staticClass: "form-control",
-                      attrs: { type: "text", placeholder: "First Name" },
+                      attrs: {
+                        type: "text",
+                        placeholder: "First Name",
+                        required: ""
+                      },
                       domProps: { value: _vm.client.first_name },
                       on: {
                         input: function($event) {
@@ -38810,7 +38821,11 @@ var render = function() {
                         }
                       ],
                       staticClass: "form-control",
-                      attrs: { type: "text", placeholder: "Last Name" },
+                      attrs: {
+                        type: "text",
+                        placeholder: "Last Name",
+                        required: ""
+                      },
                       domProps: { value: _vm.client.last_name },
                       on: {
                         input: function($event) {
@@ -38959,7 +38974,7 @@ var render = function() {
       )
     ]),
     _vm._v(" "),
-    this.page === "clients"
+    _vm.page === "clients"
       ? _c("div", [_c("clients", { attrs: { colors: this.colorArray } })], 1)
       : _c(
           "div",

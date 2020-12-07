@@ -30,7 +30,7 @@
 				<hr/>
 				<div class="a-group">
 					<button class="btn btn-small btn-warning" @click="editClient(client)" data-toggle="modal" data-target="#new-client">Edit</button>
-					<button class="btn btn-small btn-danger" @click="deleteClient(client.id)">X</button>
+					<button class="btn btn-small btn-danger" @click="deleteClient(client.id)">Delete</button>
 				</div>
 			</div> 
 		</div>
@@ -46,10 +46,10 @@
 		      <div class="modal-body">
 				<form @submit.prevent="addClient" class="mb-3">
 					<div class="form-group">
-						<input type="text" class="form-control" placeholder="First Name" v-model="client.first_name"/>
+						<input type="text" class="form-control" placeholder="First Name" v-model="client.first_name" required/>
 					</div>
 					<div class="form-group">
-						<input type="text" class="form-control" placeholder="Last Name" v-model="client.last_name"/>
+						<input type="text" class="form-control" placeholder="Last Name" v-model="client.last_name" required/>
 					</div>
 					<div class="form-group">
 						<input type="file" ref="avatarFile" class="form-control" placeholder="Avatar" v-on:change="handleAvatar"/>
@@ -125,7 +125,10 @@
 				fetch(url, {
 					//using post as put caused issues.
 					method:'post',
-					body:formData
+					body:formData,
+					headers: {
+					    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+					}
 				})
 				.then( res => res.json())
 				.then( res => {
@@ -153,7 +156,10 @@
 			deleteClient(id){
 				if(confirm('Are you sure?')){
 					fetch(`client/${id}`, {
-						method: 'delete'
+						method: 'delete',
+						headers: {
+						    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+						}
 					})
 					.then( res => res.json())
 					.then( res => {

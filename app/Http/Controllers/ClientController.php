@@ -16,7 +16,7 @@ class ClientController extends Controller
     public function index()
     {
         // dd('here');
-        return response()->json(Client::orderBy('id', 'DESC')->paginate('12'));
+        return response()->json(Client::orderBy('id', 'DESC')->paginate('10'));
     }
 
     /**
@@ -50,7 +50,7 @@ class ClientController extends Controller
                 'email' => 'required' 
             ]);
         }
-        $avatarUrl = !$put || !str_contains($request->avatar, 'storage') ? Client::SaveAvatar($request) : $client->avatar;
+        $avatarUrl = !$put || (!str_contains($request->avatar, 'storage') && !str_contains($request->avatar, 'http')) ? Client::SaveAvatar($request) : $client->avatar;
         $client->first_name = $request->first_name;
         $client->last_name = $request->last_name;
         $client->email = $request->email;
