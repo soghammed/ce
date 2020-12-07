@@ -18,4 +18,9 @@ class Client extends Model
     	$url = ltrim(\Storage::url($storagePath), '/');
     	return $url;
     }
+
+    public function transactions()
+    {
+    	return $this->hasMany(Transactions::class);
+    }
 }

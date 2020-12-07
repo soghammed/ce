@@ -13,10 +13,17 @@ class ClientController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        // dd('here');
-        return response()->json(Client::orderBy('id', 'DESC')->paginate('10'));
+        return response()->json(
+            Client::where('first_name', 'LIKE', $request->q.'%')
+                ->orWhere('last_name', 'LIKE', $request->q."%")
+                ->orWhere('email', 'LIKE', $request->q.'%')
+                ->orderBy('id', 'DESC')
+                ->paginate('10')
+        );
+
+        // return response()->json(Client::orderBy('id', 'DESC')->paginate('10'));
     }
 
     /**

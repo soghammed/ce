@@ -13,9 +13,20 @@ class TransactionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json(Transaction::orderBy('id', 'DESC')->paginate('10'));
+        return response()->json(
+            Transaction::with('clientData')
+                ->whereHas('clientData', function($q) use ($request){
+                    $q->where('first_name', 'LIKE', $request->q.'%')
+                    ->orWhere('last_name', 'LIKE', $request->q.'%');
+                })
+                ->orWhere('amount', 'LIKE', $request->q."%")
+                ->orWhere('transaction_date', 'LIKE', $request->q.'%')
+                ->orderBy('id', 'DESC')
+                ->paginate('10')
+        );
+        // return response()->json(Transaction::orderBy('id', 'DESC')->paginate('10'));
     }
 
     /**

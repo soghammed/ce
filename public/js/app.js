@@ -1977,6 +1977,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['colors'],
   data: function data() {
@@ -1988,7 +1989,7 @@ __webpack_require__.r(__webpack_exports__);
         last_name: '',
         avatar: '',
         email: '',
-        temp: ''
+        q: ''
       },
       client_id: '',
       pagination: {},
@@ -2003,6 +2004,7 @@ __webpack_require__.r(__webpack_exports__);
       this.client.avatar = e.target.files[0];
     },
     clearClient: function clearClient() {
+      this.client.q = '';
       this.client.first_name = '';
       this.client.last_name = '';
       this.client.email = '';
@@ -2034,6 +2036,7 @@ __webpack_require__.r(__webpack_exports__);
       formData.set("client_id", this.client.client_id);
       formData.set("id", this.client.id);
       formData.set("avatar", this.client.avatar);
+      formData.set("q", this.client.q);
       var url = this.edit ? 'clients' : 'client';
       fetch(url, {
         //using post as put caused issues.
@@ -2249,6 +2252,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['colors'],
   data: function data() {
@@ -2259,7 +2270,8 @@ __webpack_require__.r(__webpack_exports__);
         id: '',
         client: '',
         amount: '',
-        transaction_date: ''
+        transaction_date: '',
+        q: ''
       },
       transaction_id: '',
       pagination: {},
@@ -2290,7 +2302,8 @@ __webpack_require__.r(__webpack_exports__);
         id: '',
         client: '',
         amount: '',
-        transaction_date: ''
+        transaction_date: '',
+        q: ''
       };
       document.querySelector('#client-list').value = '';
     },
@@ -38620,10 +38633,38 @@ var render = function() {
     _c("div", { staticClass: "header" }, [
       _c("h1", [_vm._v("Clients ")]),
       _vm._v(" "),
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.client.q,
+            expression: "client.q"
+          }
+        ],
+        staticClass: "form-control search",
+        attrs: {
+          type: "text",
+          placeholder: "Search by First Name / Last Name / Email"
+        },
+        domProps: { value: _vm.client.q },
+        on: {
+          keyup: function($event) {
+            return _vm.fetchClients("clients?q=" + _vm.client.q)
+          },
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.$set(_vm.client, "q", $event.target.value)
+          }
+        }
+      }),
+      _vm._v(" "),
       _c(
         "button",
         {
-          staticClass: "btn btn-small btn-dark",
+          staticClass: "btn btn-small btn-dark new-trigger",
           attrs: {
             type: "button",
             "data-toggle": "modal",
@@ -39009,10 +39050,40 @@ var render = function() {
     _c("div", { staticClass: "header" }, [
       _c("h1", [_vm._v("Transactions ")]),
       _vm._v(" "),
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.transaction.q,
+            expression: "transaction.q"
+          }
+        ],
+        staticClass: "form-control search",
+        attrs: {
+          type: "text",
+          title: "Search by First Name / Last Name / Amount / Transaction Date",
+          placeholder:
+            "Search by First Name / Last Name / Amount / Transaction Date"
+        },
+        domProps: { value: _vm.transaction.q },
+        on: {
+          keyup: function($event) {
+            return _vm.fetchTransactions("transactions?q=" + _vm.transaction.q)
+          },
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.$set(_vm.transaction, "q", $event.target.value)
+          }
+        }
+      }),
+      _vm._v(" "),
       _c(
         "button",
         {
-          staticClass: "btn btn-small btn-dark",
+          staticClass: "btn btn-small btn-dark new-trigger",
           attrs: {
             type: "button",
             "data-toggle": "modal",
@@ -39024,70 +39095,78 @@ var render = function() {
       )
     ]),
     _vm._v(" "),
-    _c("nav", { attrs: { "aria-label": "Page navigation example" } }, [
-      _c("ul", { staticClass: "pagination" }, [
-        _c(
-          "li",
-          {
-            staticClass: "page-item",
-            class: [{ disabled: !_vm.pagination.prev_page_url }]
-          },
-          [
-            _c(
-              "a",
-              {
-                staticClass: "page-link",
-                attrs: { href: "#" },
-                on: {
-                  click: function($event) {
-                    return _vm.fetchTransactions(_vm.pagination.prev_page_url)
-                  }
-                }
-              },
-              [_vm._v("Previous")]
-            )
-          ]
-        ),
-        _vm._v(" "),
-        _c("li", { staticClass: "page-item disabled" }, [
-          _c(
-            "a",
-            { staticClass: "page-link text-dark", attrs: { href: "#" } },
-            [
-              _vm._v(
-                "Page " +
-                  _vm._s(_vm.pagination.current_page) +
-                  " of " +
-                  _vm._s(_vm.pagination.last_page)
+    _vm.transactions.length
+      ? _c("div", [
+          _c("nav", { attrs: { "aria-label": "Page navigation example" } }, [
+            _c("ul", { staticClass: "pagination" }, [
+              _c(
+                "li",
+                {
+                  staticClass: "page-item",
+                  class: [{ disabled: !_vm.pagination.prev_page_url }]
+                },
+                [
+                  _c(
+                    "a",
+                    {
+                      staticClass: "page-link",
+                      attrs: { href: "#" },
+                      on: {
+                        click: function($event) {
+                          return _vm.fetchTransactions(
+                            _vm.pagination.prev_page_url
+                          )
+                        }
+                      }
+                    },
+                    [_vm._v("Previous")]
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c("li", { staticClass: "page-item disabled" }, [
+                _c(
+                  "a",
+                  { staticClass: "page-link text-dark", attrs: { href: "#" } },
+                  [
+                    _vm._v(
+                      "Page " +
+                        _vm._s(_vm.pagination.current_page) +
+                        " of " +
+                        _vm._s(_vm.pagination.last_page)
+                    )
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c(
+                "li",
+                {
+                  staticClass: "page-item",
+                  class: [{ disabled: !_vm.pagination.next_page_url }]
+                },
+                [
+                  _c(
+                    "a",
+                    {
+                      staticClass: "page-link",
+                      attrs: { href: "#" },
+                      on: {
+                        click: function($event) {
+                          return _vm.fetchTransactions(
+                            _vm.pagination.next_page_url
+                          )
+                        }
+                      }
+                    },
+                    [_vm._v("Next")]
+                  )
+                ]
               )
-            ]
-          )
-        ]),
-        _vm._v(" "),
-        _c(
-          "li",
-          {
-            staticClass: "page-item",
-            class: [{ disabled: !_vm.pagination.next_page_url }]
-          },
-          [
-            _c(
-              "a",
-              {
-                staticClass: "page-link",
-                attrs: { href: "#" },
-                on: {
-                  click: function($event) {
-                    return _vm.fetchTransactions(_vm.pagination.next_page_url)
-                  }
-                }
-              },
-              [_vm._v("Next")]
-            )
-          ]
-        )
-      ])
-    ]),
+            ])
+          ])
+        ])
+      : _vm._e(),
     _vm._v(" "),
     _c(
       "div",
@@ -39099,7 +39178,17 @@ var render = function() {
           [
             _c("hr"),
             _vm._v(" "),
-            _c("h5", [_vm._v("Client " + _vm._s(transaction.client))]),
+            _c("h5", [
+              transaction.client_data
+                ? _c("div", [
+                    _vm._v(
+                      _vm._s(transaction.client_data.first_name) +
+                        " " +
+                        _vm._s(transaction.client_data.last_name)
+                    )
+                  ])
+                : _c("div", [_vm._v("Client Removed")])
+            ]),
             _vm._v(" "),
             _c("h1", [_c("b", [_vm._v("£" + _vm._s(transaction.amount))])]),
             _vm._v(" "),
@@ -39146,70 +39235,78 @@ var render = function() {
       0
     ),
     _vm._v(" "),
-    _c("nav", { attrs: { "aria-label": "Page navigation example" } }, [
-      _c("ul", { staticClass: "pagination" }, [
-        _c(
-          "li",
-          {
-            staticClass: "page-item",
-            class: [{ disabled: !_vm.pagination.prev_page_url }]
-          },
-          [
-            _c(
-              "a",
-              {
-                staticClass: "page-link",
-                attrs: { href: "#" },
-                on: {
-                  click: function($event) {
-                    return _vm.fetchTransactions(_vm.pagination.prev_page_url)
-                  }
-                }
-              },
-              [_vm._v("Previous")]
-            )
-          ]
-        ),
-        _vm._v(" "),
-        _c("li", { staticClass: "page-item disabled" }, [
-          _c(
-            "a",
-            { staticClass: "page-link text-dark", attrs: { href: "#" } },
-            [
-              _vm._v(
-                "Page " +
-                  _vm._s(_vm.pagination.current_page) +
-                  " of " +
-                  _vm._s(_vm.pagination.last_page)
+    _vm.transactions.length
+      ? _c("div", [
+          _c("nav", { attrs: { "aria-label": "Page navigation example" } }, [
+            _c("ul", { staticClass: "pagination" }, [
+              _c(
+                "li",
+                {
+                  staticClass: "page-item",
+                  class: [{ disabled: !_vm.pagination.prev_page_url }]
+                },
+                [
+                  _c(
+                    "a",
+                    {
+                      staticClass: "page-link",
+                      attrs: { href: "#" },
+                      on: {
+                        click: function($event) {
+                          return _vm.fetchTransactions(
+                            _vm.pagination.prev_page_url
+                          )
+                        }
+                      }
+                    },
+                    [_vm._v("Previous")]
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c("li", { staticClass: "page-item disabled" }, [
+                _c(
+                  "a",
+                  { staticClass: "page-link text-dark", attrs: { href: "#" } },
+                  [
+                    _vm._v(
+                      "Page " +
+                        _vm._s(_vm.pagination.current_page) +
+                        " of " +
+                        _vm._s(_vm.pagination.last_page)
+                    )
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c(
+                "li",
+                {
+                  staticClass: "page-item",
+                  class: [{ disabled: !_vm.pagination.next_page_url }]
+                },
+                [
+                  _c(
+                    "a",
+                    {
+                      staticClass: "page-link",
+                      attrs: { href: "#" },
+                      on: {
+                        click: function($event) {
+                          return _vm.fetchTransactions(
+                            _vm.pagination.next_page_url
+                          )
+                        }
+                      }
+                    },
+                    [_vm._v("Next")]
+                  )
+                ]
               )
-            ]
-          )
-        ]),
-        _vm._v(" "),
-        _c(
-          "li",
-          {
-            staticClass: "page-item",
-            class: [{ disabled: !_vm.pagination.next_page_url }]
-          },
-          [
-            _c(
-              "a",
-              {
-                staticClass: "page-link",
-                attrs: { href: "#" },
-                on: {
-                  click: function($event) {
-                    return _vm.fetchTransactions(_vm.pagination.next_page_url)
-                  }
-                }
-              },
-              [_vm._v("Next")]
-            )
-          ]
-        )
-      ])
-    ]),
+            ])
+          ])
+        ])
+      : _vm._e(),
     _vm._v(" "),
     _c(
       "div",
@@ -39240,7 +39337,7 @@ var render = function() {
                       "select",
                       {
                         staticClass: "form-control",
-                        attrs: { id: "client-list" },
+                        attrs: { id: "client-list", required: "" },
                         on: { change: _vm.handleClient }
                       },
                       [
@@ -39287,7 +39384,11 @@ var render = function() {
                         }
                       ],
                       staticClass: "form-control",
-                      attrs: { type: "date", placeholder: "Transaction Date" },
+                      attrs: {
+                        type: "date",
+                        placeholder: "Transaction Date",
+                        required: ""
+                      },
                       domProps: { value: _vm.transaction.transaction_date },
                       on: {
                         input: function($event) {
@@ -39315,7 +39416,11 @@ var render = function() {
                         }
                       ],
                       staticClass: "form-control",
-                      attrs: { type: "number", placeholder: "Amount" },
+                      attrs: {
+                        type: "number",
+                        placeholder: "Amount",
+                        required: ""
+                      },
                       domProps: { value: _vm.transaction.amount },
                       on: {
                         input: function($event) {
@@ -51809,15 +51914,14 @@ __webpack_require__.r(__webpack_exports__);
 /*!**************************************************!*\
   !*** ./resources/js/components/Transactions.vue ***!
   \**************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Transactions_vue_vue_type_template_id_eba36a80___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Transactions.vue?vue&type=template&id=eba36a80& */ "./resources/js/components/Transactions.vue?vue&type=template&id=eba36a80&");
 /* harmony import */ var _Transactions_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Transactions.vue?vue&type=script&lang=js& */ "./resources/js/components/Transactions.vue?vue&type=script&lang=js&");
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _Transactions_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _Transactions_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -51847,7 +51951,7 @@ component.options.__file = "resources/js/components/Transactions.vue"
 /*!***************************************************************************!*\
   !*** ./resources/js/components/Transactions.vue?vue&type=script&lang=js& ***!
   \***************************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

@@ -10917,7 +10917,16 @@ a.text-dark:focus {
 
 .header {
   display: grid;
-  grid-template-columns: 7fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.search {
+  justify-self: center;
+}
+
+.new-trigger {
+  width: 50%;
+  justify-self: end;
 }
 
 .data-list {

@@ -2,7 +2,8 @@
 	<div>
 		<div class="header">
 			<h1>Clients </h1>
-			<button type="button" class="btn btn-small btn-dark" data-toggle="modal" data-target="#new-client" @click="clearClient">
+			<input type="text" class="form-control search" placeholder="Search by First Name / Last Name / Email" v-model="client.q" v-on:keyup="fetchClients('clients?q='+client.q)"/>
+			<button type="button" class="btn btn-small btn-dark new-trigger" data-toggle="modal" data-target="#new-client" @click="clearClient">
 			  New Client
 			</button>
 		</div>
@@ -79,7 +80,7 @@
 					last_name:'',
 					avatar:'',
 					email:'',
-					temp:''
+					q:''
 				},
 				client_id:'',
 				pagination:{},
@@ -94,6 +95,7 @@
 				this.client.avatar = e.target.files[0];
 			},
 			clearClient(){
+				this.client.q = ''
 				this.client.first_name = ''
 				this.client.last_name = ''
 				this.client.email = ''
@@ -121,6 +123,7 @@
 				formData.set("client_id", this.client.client_id);
 				formData.set("id", this.client.id);
 				formData.set("avatar", this.client.avatar);
+				formData.set("q", this.client.q);
 				let url = this.edit ? 'clients' : 'client';
 				fetch(url, {
 					//using post as put caused issues.
