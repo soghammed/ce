@@ -131,7 +131,7 @@
 				this.transaction.client = e.target.value;
 			},
 			fetchAllClients(){
-				fetch('api/transaction/clients')
+				fetch('transaction/clients')
 					.then(res => res.json())
 					.then( res => {
 						this.clients = res;
@@ -149,7 +149,7 @@
 			},
 			fetchTransactions(url){
 				let vm = this;
-				url = url || 'api/transactions';
+				url = url || 'transactions';
 				fetch(url)
 					.then(res => res.json())
 					.then(res => {
@@ -161,7 +161,7 @@
 
 			},
 			addTransaction(){
-				let url = this.edit ? 'api/transactions' : 'api/transaction';
+				let url = this.edit ? 'transactions' : 'transaction';
 				fetch(url, {
 					//using post as put caused issues.
 					method:'post',
@@ -195,7 +195,7 @@
 			},
 			deleteTransaction(id){
 				if(confirm('Are you sure?')){
-					fetch(`api/transaction/${id}`, {
+					fetch(`transaction/${id}`, {
 						method: 'delete'
 					})
 					.then( res => res.json())

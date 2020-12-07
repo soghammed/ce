@@ -102,7 +102,7 @@
 			},
 			fetchClients(url){
 				let vm = this;
-				url = url || 'api/clients';
+				url = url || 'clients';
 				fetch(url)
 					.then(res => res.json())
 					.then(res => {
@@ -121,7 +121,7 @@
 				formData.set("client_id", this.client.client_id);
 				formData.set("id", this.client.id);
 				formData.set("avatar", this.client.avatar);
-				let url = this.edit ? 'api/clients' : 'api/client';
+				let url = this.edit ? 'clients' : 'client';
 				fetch(url, {
 					//using post as put caused issues.
 					method:'post',
@@ -152,7 +152,7 @@
 			},
 			deleteClient(id){
 				if(confirm('Are you sure?')){
-					fetch(`api/client/${id}`, {
+					fetch(`client/${id}`, {
 						method: 'delete'
 					})
 					.then( res => res.json())

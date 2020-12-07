@@ -19,18 +19,3 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
-
-// Route::middleware(['auth:web'])->group(function(){
-
-	Route::get('clients', 'App\Http\Controllers\ClientController@index');
-	Route::post('client', 'App\Http\Controllers\ClientController@store');
-	Route::post('clients', 'App\Http\Controllers\ClientController@store');
-	Route::delete('client/{id}', 'App\Http\Controllers\ClientController@destroy');
-
-	Route::get('transactions', 'App\Http\Controllers\TransactionController@index');
-	Route::get('transaction/clients', 'App\Http\Controllers\TransactionController@clients');
-	Route::post('transaction', 'App\Http\Controllers\TransactionController@store');
-	Route::post('transactions', 'App\Http\Controllers\TransactionController@store');
-	Route::delete('transaction/{id}', 'App\Http\Controllers\TransactionController@destroy');
-
-// });

@@ -24,7 +24,8 @@ class DatabaseSeeder extends Seeder
         User::create([
         	"name" => "admin", 
         	"email" => "admin@admin.com",
-        	"password" => bcrypt('password')
+        	"password" => bcrypt('password'),
+            "api_token" => \Str::random(60)
         ]);
 
         //create 20 clients with 5 transactions each

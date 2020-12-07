@@ -2013,7 +2013,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       var vm = this;
-      url = url || 'api/clients';
+      url = url || 'clients';
       fetch(url).then(function (res) {
         return res.json();
       }).then(function (res) {
@@ -2034,7 +2034,7 @@ __webpack_require__.r(__webpack_exports__);
       formData.set("client_id", this.client.client_id);
       formData.set("id", this.client.id);
       formData.set("avatar", this.client.avatar);
-      var url = this.edit ? 'api/clients' : 'api/client';
+      var url = this.edit ? 'clients' : 'client';
       fetch(url, {
         //using post as put caused issues.
         method: 'post',
@@ -2071,7 +2071,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this3 = this;
 
       if (confirm('Are you sure?')) {
-        fetch("api/client/".concat(id), {
+        fetch("client/".concat(id), {
           method: 'delete'
         }).then(function (res) {
           return res.json();
@@ -2272,7 +2272,7 @@ __webpack_require__.r(__webpack_exports__);
     fetchAllClients: function fetchAllClients() {
       var _this = this;
 
-      fetch('api/transaction/clients').then(function (res) {
+      fetch('transaction/clients').then(function (res) {
         return res.json();
       }).then(function (res) {
         _this.clients = res;
@@ -2293,7 +2293,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       var vm = this;
-      url = url || 'api/transactions';
+      url = url || 'transactions';
       fetch(url).then(function (res) {
         return res.json();
       }).then(function (res) {
@@ -2307,7 +2307,7 @@ __webpack_require__.r(__webpack_exports__);
     addTransaction: function addTransaction() {
       var _this3 = this;
 
-      var url = this.edit ? 'api/transactions' : 'api/transaction';
+      var url = this.edit ? 'transactions' : 'transaction';
       fetch(url, {
         //using post as put caused issues.
         method: 'post',
@@ -2347,7 +2347,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this4 = this;
 
       if (confirm('Are you sure?')) {
-        fetch("api/transaction/".concat(id), {
+        fetch("transaction/".concat(id), {
           method: 'delete'
         }).then(function (res) {
           return res.json();
