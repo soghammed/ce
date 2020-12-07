@@ -12,6 +12,4 @@
 
 - php artisan db:seed
 
-- php artisan storage:link
-
 ```
