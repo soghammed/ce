@@ -1,9 +1,13 @@
 ## Instructions
 
 ```
-npm install
+- create a mysql db named ce;
 
-php artisan migrate
+- composer install
 
-php artisan db:seed
+- npm install
+
+- php artisan migrate
+
+- php artisan db:seed
 ```
